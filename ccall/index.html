@@ -1,0 +1,24 @@
+<html>
+  <body>
+    <button class="mybutton">Run my function</button>
+    <canvas id="canvas_id">
+      result
+    </canvas>
+  </body>
+
+  <script type="text/javascript" src="hello_world_ccall.js"></script>
+  <script>
+  document.querySelector('.mybutton').addEventListener('click', function(){
+    alert('check your console');
+    var result = Module.ccall('myFunction', // name of C function 
+    'string', // return type
+    null, // argument types
+    null); // arguments
+    
+    var canvas_box = document.getElementById('canvas_id').getContext('2d')
+    canvas_box.font="48px serif";
+    canvas_box.strokeText(result, 10, 50);
+  });
+  </script>
+
+</html>

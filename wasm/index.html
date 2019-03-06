@@ -1,0 +1,53 @@
+<html>
+  <body>
+      <button class="mybutton">Run my function</button>
+  </body>
+
+  <canvas id="canvas_id" width=500 height=150>
+      result
+  </canvas>
+
+  <script>
+  function fetchAndInstantiate(url,imports) {
+    return fetch(url).then(response =>
+      response.arrayBuffer()
+    ).then(bytes =>
+      WebAssembly.instantiate(bytes,imports)
+    ).then(results =>
+      results.instance
+    );
+  }
+
+  
+  var imports={
+    env:{
+      __memory_base: 0,
+      __table_base: 0,
+      memory: new WebAssembly.Memory({ initial: 256, maximum:256 }),
+      table: new WebAssembly.Table({ initial: 6, element: 'anyfunc', maximum:6 }),
+      DYNAMICTOP_PTR: 0
+    },
+    global:{
+      NaN : 2,
+      Infinity:3
+    }
+  }
+
+  buffer=new Uint8Array(imports.env.memory.buffer);
+
+  fetchAndInstantiate('hello_world.wasm',imports).then(function(instance) {
+      document.querySelector('.mybutton').addEventListener('click', function(){
+        var result = instance.exports._myFunction();
+        let result_str="";
+        for(let i = result; i < result+12; ++i)
+            result_str+=String.fromCharCode(buffer[i])
+        console.log(result_str)
+        var canvas_box = document.getElementById('canvas_id').getContext('2d')
+        canvas_box.font="48px serif";
+        canvas_box.strokeText(result_str, 10+100*Math.random(), 50+100*Math.random());
+      });
+
+  })
+  </script>
+
+</html>
