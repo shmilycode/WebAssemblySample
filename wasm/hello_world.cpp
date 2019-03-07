@@ -1,8 +1,9 @@
+const char* hello="hello,world!";
 #ifdef __cplusplus
 extern "C" {
 #endif
-char* myFunction() {
-  return "hello,world!";
+const char* myFunction() {
+  return hello;
 }
 #ifdef __cplusplus
 }
