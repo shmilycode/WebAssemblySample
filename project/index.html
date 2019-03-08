@@ -1,0 +1,23 @@
+<html>
+  <body>
+    <button class="mybutton">Run my function</button>
+    <canvas id="canvas_id">
+      result
+    </canvas>
+  </body>
+
+  <script type="text/javascript" src="libmain.js"></script>
+  <script>
+  Walle().then(function(Instance) {
+    document.querySelector('.mybutton').addEventListener('click', function(){
+      alert('check your console');
+      var mainClass = new Instance.MainClass();     
+      var result=mainClass.DoTest();
+      var canvas_box = document.getElementById('canvas_id').getContext('2d')
+      canvas_box.font="48px serif";
+      canvas_box.strokeText(result, 10, 50);
+    });
+  });
+  </script>
+
+</html>
